@@ -1,34 +1,30 @@
-// Inicializa o mapa com as coordenadas iniciais de Rua Carolina da Costa Rodrigues Oliveira, Hortolândia - SP
-var initialLat = -22.89708; // Latitude inicial
-var initialLon = -47.17687; // Longitude inicial
+// Inicializa o mapa com as coordenadas iniciais de Av. da Saudade, Campinas - SP
+var initialLat = -22.914822689607544; // Latitude inicial
+var initialLon = -47.05588272446561; // Longitude inicial
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Cria o mapa e ajusta a visualização inicial para as coordenadas especificadas com um nível de zoom adequado
     var map = L.map('map').setView([initialLat, initialLon], 15);
-
-    // Adiciona a camada de tiles do OpenStreetMap ao mapa
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // Adiciona um marcador na posição inicial
-    var marker = L.marker([initialLat, initialLon]).addTo(map);
-    marker.bindPopup("<b>Localização Inicial</b><br>Rua Carolina da Costa Rodrigues Oliveira, Hortoândia- SP").openPopup();
+    var marker;
 
-    // Adiciona o controle de geocodificação usando o plugin Leaflet Control Geocoder
     var geocoder = L.Control.geocoder({
         defaultMarkGeocode: false
-    }).on('markgeocode', function(e) {
-        var bbox = e.geocode.bbox;
-        var poly = L.polygon([
-            bbox.getSouthEast(),
-            bbox.getNorthEast(),
-            bbox.getNorthWest(),
-            bbox.getSouthWest()
-        ]).addTo(map);
-        map.fitBounds(poly.getBounds());
-    }).addTo(map);
+    })
+    .on('markgeocode', function(e) {
+        var center = e.geocode.center;
+        if (marker) map.removeLayer(marker);
+        marker = L.marker(center).addTo(map);
+        marker.bindPopup(e.geocode.name).openPopup();
+        map.setView(center, 16);
+
+        // Aqui definimos o valor do input para o endereço encontrado
+        document.getElementById('nomeConsulta').value = e.geocode.name;
+    })
+    .addTo(map);
 
     // Função para buscar endereços e centralizar no mapa
     geocoder.on('markgeocode', function(event) {
