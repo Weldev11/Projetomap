@@ -1,4 +1,4 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -12,13 +12,15 @@
 <body>
     <nav>
         <ul class="menu">
-            <li><a href="index.html">Home</a></li>
+            <li><a href="cadastro.html">Home</a></li>
             <li><a href="mapa.html">Mapa</a></li>
         </ul>
     </nav>
 
-    <section id="map" style="width: 100%; height: 800px;"></section>
+    <h2>Pesquisar Endereço</h2>
+    <input type="text" id="nomeConsulta" name="nomeConsulta"><br>
+    <section id="map" style="width: 100%; height: 400px;"></section>
     
-    <script src="model/map-setup.js">    </script>
+    <script src="map-setup.js"></script>
 </body>
 </html>
